@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* Not Found Error Handler */
 
 const notFound = (req, res, next) => {
@@ -18,4 +19,4 @@ const handleError = (err, req, res, next) => {
     });
 };
 
-module.exports = { handleError, notFound };
+module.exports = { handleError,notFound }
