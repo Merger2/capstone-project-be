@@ -1,17 +1,17 @@
 const express = require("express");
 const dbConnect = require("./src/CONFIG/dbConnect");
 const { notFound, handleError } = require("./src/middlewares/errorHandler");
-const userRouter = require("./routes/userRoutes");
+const userRouter = require("./src/routes/userRoutes");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
-const googleRouter = require("./routes/googleRoutes");
+const googleRouter = require('./src/routes/googleRoutes');
 const app = express();
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const passportSetup = require("./src/utils/passport");
-const tutCatRouter = require("./routes/tutCatRoutes");
+const tutCatRouter = require("./src/routes/tutCatRoutes");
 
 dbConnect();
 app.use(

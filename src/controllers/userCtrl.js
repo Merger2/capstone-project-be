@@ -1,8 +1,8 @@
-const { generateToken } = require("../../CONFIG/jwtToken");
-const validateMongodbId = require("../../CONFIG/validateMongoDbId");
+const validateMongoDbId = require('../CONFIG/validateMongoDbId');
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const crypto = require("crypto");
+const { generateToken } = require("../CONFIG/jwtToken");
 const sendEmail = require("./emailCtrl");
 /* create user */
 
