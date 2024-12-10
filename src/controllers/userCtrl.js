@@ -1,8 +1,9 @@
-const { generateToken } = require("../CONFIG/jwtToken");
-const validateMongodbId = require("../CONFIG/validateMongoDbId");
+const { generateToken } = require("../../CONFIG/jwtToken");
+const validateMongodbId = require("../../CONFIG/validateMongoDbId");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const crypto = require("crypto");
+const sendEmail = require("./emailCtrl");
 /* create user */
 
 const registerAUser = asyncHandler(async (req, res) => {
@@ -92,14 +93,26 @@ const updateUser = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongodbId(id);
+
   try {
-    await User.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({
+        status: false,
+        message: "User not found",
+      });
+    }
+
     res.status(200).json({
       status: true,
-      message: "User Deleted succes",
+      message: "User deleted successfully",
     });
   } catch (error) {
-    throw new Error(error);
+    res.status(500).json({
+      status: false,
+      message: error.message || "An error occurred while deleting the user",
+    });
   }
 });
 
@@ -194,6 +207,13 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
     const token = await user.createPasswordResetToken();
     await user.save();
     const resetLink = `http://localhost:4000/api/user/reset-password/${token}`;
+    const data = {
+      to: email,
+      text: `Hey ${user.firstname + " " + user.lastname}`,
+      subject: "Forgot Password",
+      html: resetLink,
+    };
+    sendEmail(data);
     res.status(200).json(resetLink);
   } catch (error) {
     console.error("Forgot Password error:", error); // Logging
