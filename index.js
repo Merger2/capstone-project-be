@@ -12,6 +12,7 @@ const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const passportSetup = require("./src/utils/passport");
 const tutCatRouter = require("./src/routes/tutCatRoutes");
+const tutorialRouter = require("./src/routes/tutorialRoutes");
 
 dbConnect();
 app.use(
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRouter);
 app.use("/", googleRouter);
 app.use("/api/tutorial/category", tutCatRouter)
+app.use("/api/tutorial", tutorialRouter)
 app.use(notFound);
 app.use(handleError);
 

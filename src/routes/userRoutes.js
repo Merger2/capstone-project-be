@@ -3,16 +3,15 @@ const { registerAUser, loginUser, getAllUser, updateUser, deleteUser, getAUser, 
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware');
 const userRouter = expres.Router();
 
-/* all post Routes */ 
 userRouter.post("/register", registerAUser);
 userRouter.post("/login", loginUser);
 userRouter.post("/forgot-password", forgotPasswordToken);
 
-/* all get Routes */
+
 userRouter.get("/all-users",authMiddleware, isAdmin, getAllUser);
 userRouter.get("/:id", authMiddleware, getAUser);
 
-/* all put Routes */
+
 userRouter.put("/update-profile", authMiddleware, updateUser);
 userRouter.put("/block/:id", authMiddleware, isAdmin, blockUser);
 userRouter.put("/unblock/:id", authMiddleware, isAdmin, unBlockUser);

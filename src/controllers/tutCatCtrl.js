@@ -37,32 +37,82 @@ const getAllTutCategories = asyncHandler(async (req, res) => {
     const allTutCat = await TutorialCategory.find();
     res.status(200).json({
       status: true,
-      message: "Tutorial Category fetched Successfully",
+      message: "Tutorial Category fetched",
+      allTutCat,
     });
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const getATutCat = asyncHandler(async (req, res) => {
+const getATutCat = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
+  validateMongodbId(id);
+  
   try {
     const findTutCat = await TutorialCategory.findById(id);
-    res.status(200).json({
-        status: true,
-        message: "Category Found",
+    
+    if (!findTutCat) {
+      return res.status(404).json({
+        status: false,
+        message: "Category not found",
       });
+    }
+    
+    res.status(200).json({
+      status: true,
+      message: "Category Found",
+      findTutCat,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+const deleteATutCat = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongodbId(id);
+  try {
+    const deleteTutCat = await TutorialCategory.findByIdAndDelete(id);
+    res.status(200).json({
+      status: true,
+      message: "Tutorial Category Deleted",
+      deleteTutCat,
+    });
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const deletATutCat = asyncHandler(async (req, res) => {
+const updateATutCat = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongodbId(id);
   try {
-    const findTutCat = await TutorialCategory.findByIdAndDelete(id);
-  } catch (error) {}
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title.toLowerCase());
+    }
+    const updateTutCat = await TutorialCategory.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({
+      status: true,
+      message: "Tutorial Category Update",
+      updateTutCat,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
-module.exports = { postTutorialCategory };
+module.exports = {
+  postTutorialCategory,
+  getATutCat,
+  getAllTutCategories,
+  updateATutCat,
+  deleteATutCat,
+};
