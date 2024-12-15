@@ -22,7 +22,6 @@ let userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       index: true,
-      match: [/.+\@.+\..+/, "Please enter a valid email address"],
     },
     mobile: {
       type: String,

@@ -6,13 +6,16 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
-const googleRouter = require('./src/routes/googleRoutes');
+const googleRouter = require("./src/routes/googleRoutes");
 const app = express();
 const dotenv = require("dotenv").config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 const passportSetup = require("./src/utils/passport");
 const tutCatRouter = require("./src/routes/tutCatRoutes");
 const tutorialRouter = require("./src/routes/tutorialRoutes");
+const newsLetterRouter = require("./src/routes/newsLetterRoutes");
+const reviewRouter = require("./src/routes/reviewsRouter");
+const contactRouter = require("./src/routes/contactRoutes");
 
 dbConnect();
 app.use(
@@ -38,8 +41,12 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRouter);
 app.use("/", googleRouter);
-app.use("/api/tutorial/category", tutCatRouter)
-app.use("/api/tutorial", tutorialRouter)
+app.use("/api/tutorial/category", tutCatRouter);
+app.use("/api/tutorial", tutorialRouter);
+app.use("/api/newsletter", newsLetterRouter);
+app.use("/api/review", reviewRouter);
+app.use("/api/contact", contactRouter);
+
 app.use(notFound);
 app.use(handleError);
 
