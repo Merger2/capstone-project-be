@@ -16,6 +16,12 @@ const tutorialRouter = require("./src/routes/tutorialRoutes");
 const newsLetterRouter = require("./src/routes/newsLetterRoutes");
 const reviewRouter = require("./src/routes/reviewsRouter");
 const contactRouter = require("./src/routes/contactRoutes");
+const videoRouter = require("./src/routes/videoRoutes");
+const documentRouter = require("./src/routes/documentRoutes");
+const docCatRouter = require("./src/routes/docCatRoutes");
+const blogCatRouter = require("./src/routes/blogCatRoutes");
+const blogRouter = require("./src/routes/blogRoutes");
+const quizRouter = require("./src/routes/quizRoutes");
 
 dbConnect();
 app.use(
@@ -46,6 +52,12 @@ app.use("/api/tutorial", tutorialRouter);
 app.use("/api/newsletter", newsLetterRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/contact", contactRouter);
+app.use("/api/video", videoRouter);
+app.use("/api/doc/category", docCatRouter);
+app.use("/api/doc", documentRouter);
+app.use("/api/blog/category", blogCatRouter);
+app.use("/api/blog", blogRouter);
+app.use("/api/quiz", quizRouter);
 
 app.use(notFound);
 app.use(handleError);

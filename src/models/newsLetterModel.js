@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-var newsLetterSchema = new mongoose.Schema(
+let newsLetterSchema = new mongoose.Schema(
   {
     email: {
       type: String,
