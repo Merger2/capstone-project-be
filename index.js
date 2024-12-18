@@ -22,6 +22,13 @@ const docCatRouter = require("./src/routes/docCatRoutes");
 const blogCatRouter = require("./src/routes/blogCatRoutes");
 const blogRouter = require("./src/routes/blogRoutes");
 const quizRouter = require("./src/routes/quizRoutes");
+const cors = require("cors");
+
+
+app.use(cors({
+  origin:'http://localhost:5173',
+  credential: true
+}))
 
 dbConnect();
 app.use(
