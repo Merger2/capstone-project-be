@@ -23,13 +23,6 @@ let userSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    mobile: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-      match: [/^\d{10,15}$/, "Please enter a valid mobile number"],
-    },
     password: {
       type: String,
       required: true,
