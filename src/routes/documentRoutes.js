@@ -15,4 +15,4 @@ documentRouter.get("/", getAlldoc);
 documentRouter.delete("/:id", authMiddleware, isAdmin, deletedoc);
 documentRouter.put("/:id", authMiddleware, isAdmin, updatedoc);
 
-module.exports = documentRouter; // Pastikan ekspor menggunakan module.exports
+module.exports = documentRouter;

@@ -79,7 +79,7 @@ userSchema.methods.createPasswordResetToken = async function () {
   return resetToken;
 };
 
-userSchema.method.isBlocked = function () {
+userSchema.methods.isBlocked = function () {
   return this.isblocked;
 };
 
