@@ -49,7 +49,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send(`<a href="http://localhost:4000/google">Login With Google</a>`);
+  res.send(`<a href="https://capstone-project-be-gamma.vercel.app/google">Login With Google</a>`);
 });
 
 app.use("/api/user", userRouter);
