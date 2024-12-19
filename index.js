@@ -25,7 +25,8 @@ const quizRouter = require("./src/routes/quizRoutes");
 const cors = require("cors");
 
 
-app.use(cors({origin:" ",
+app.use(cors({
+  origin: "http://localhost:5173",
   credential: true,
 }))
 
