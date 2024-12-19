@@ -1,9 +1,9 @@
-const validateMongoDbId = require('../CONFIG/validateMongoDbId');
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const crypto = require("crypto");
 const { generateToken } = require("../CONFIG/jwtToken");
 const sendEmail = require("./emailCtrl");
+const validateMongodbId = require("../CONFIG/validateMongoDbId");
 /* create user */
 
 const registerAUser = asyncHandler(async (req, res) => {
@@ -60,7 +60,7 @@ const getAllUser = asyncHandler(async (req, res) => {
 /* get A User */
 const getAUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  validateMongodbId(id);
+  validateMongodbId(id)
   try {
     const getProfile = await User.findById(id);
     res.status(200).json({
