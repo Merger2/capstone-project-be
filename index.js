@@ -51,7 +51,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send(`<a href="#">Login With Google</a>`);
+  res.send(`<a href="https://api-lms-green.vercel.app/google">Login With Google</a>`);
 });
 
 app.use("/api/user", userRouter);
