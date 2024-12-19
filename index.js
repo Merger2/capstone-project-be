@@ -26,7 +26,7 @@ const cors = require("cors");
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Ganti dengan origin yang benar dari aplikasi frontend Anda
+  origin: ' ', // Ganti dengan origin yang benar dari aplikasi frontend Anda
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Jika Anda menggunakan cookies atau session
