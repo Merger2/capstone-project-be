@@ -43,15 +43,30 @@ const evaluateQuiz = asyncHandler(async (req, res) => {
   });
 });
 
+
+
 const getUserAnswerHistory = asyncHandler(async (req, res) => {
   const userAnswers = await UserAnswer.find({ user: req.user._id })
-    .populate("quiz", "title")
+    .populate({
+      path: "quiz",
+      select: "title",
+      match: { isDeleted: { $ne: true } },
+    })
     .populate("user", "firstname lastname email");
+
+  const validUserAnswers = userAnswers.filter(answer => answer.quiz !== null);
+
+  if (validUserAnswers.length === 0) {
+    return res.status(404).json({
+      status: false,
+      message: "No valid user answers found",
+    });
+  }
 
   res.status(200).json({
     status: true,
     message: "User answer history fetched successfully",
-    data: userAnswers,
+    data: validUserAnswers,
   });
 });
 
@@ -72,6 +87,7 @@ const getUserStats = asyncHandler(async (req, res) => {
     },
   });
 });
+
 
 const getLeaderboard = asyncHandler(async (req, res) => {
   const leaderboard = await UserAnswer.aggregate([

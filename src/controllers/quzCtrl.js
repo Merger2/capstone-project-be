@@ -38,6 +38,12 @@ const createQuiz = asyncHandler(async (req, res) => {
 const getAllQuizzes = asyncHandler(async (req, res) => {
   try {
     const quizzes = await Quiz.find();
+    if (quizzes.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "No quizzes found",
+      });
+    }
     res.status(200).json({
       status: true,
       message: "Quizzes found",
@@ -50,6 +56,7 @@ const getAllQuizzes = asyncHandler(async (req, res) => {
     });
   }
 });
+
 
 const getQuizzesByFilter = asyncHandler(async (req, res) => {
     const { categorySlug, levelSlug, schoolTypeSlug } = req.params;
@@ -110,4 +117,51 @@ const deleteQuiz = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createQuiz, getAllQuizzes, getQuizzesByFilter, deleteQuiz };
+const updateQuiz = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { title, questions, category, level, schoolType } = req.body;
+
+  // Validate input
+  if (!title || !questions || questions.length === 0) {
+    return res.status(400).json({
+      status: false,
+      message: "Title and questions are required",
+    });
+  }
+
+  try {
+    const updatedQuiz = await Quiz.findByIdAndUpdate(
+      id,
+      {
+        title,
+        category: slugify(category, { lower: true }),
+        level: slugify(level, { lower: true }),
+        schoolType: slugify(schoolType, { lower: true }),
+        questions,
+        updatedBy: req.user._id,
+      },
+      { new: true }
+    );
+
+    if (!updatedQuiz) {
+      return res.status(404).json({
+        status: false,
+        message: "Quiz not found",
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "Quiz updated successfully",
+      data: updatedQuiz,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message || "An error occurred while updating the quiz",
+    });
+  }
+});
+
+
+module.exports = { createQuiz, getAllQuizzes, getQuizzesByFilter, deleteQuiz, updateQuiz };

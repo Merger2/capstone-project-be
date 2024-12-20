@@ -22,7 +22,8 @@ quizRouter.get(
 quizRouter.delete("/:id", authMiddleware, isAdmin, deleteQuiz);
 quizRouter.post("/evaluate", authMiddleware, evaluateQuiz);
 quizRouter.get("/history", authMiddleware, getUserAnswerHistory);
-quizRouter.get("/stats", authMiddleware, getUserStats);
+quizRouter.get("/stats/:id", authMiddleware, getUserStats);
 quizRouter.get("/leaderboard", authMiddleware, isAdmin, getLeaderboard);
+quizRouter.put("/:id")
 
 module.exports = quizRouter;
