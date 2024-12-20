@@ -15,22 +15,44 @@ const tutCatRouter = require("./src/routes/tutCatRoutes");
 const tutorialRouter = require("./src/routes/tutorialRoutes");
 const newsLetterRouter = require("./src/routes/newsLetterRoutes");
 const reviewRouter = require("./src/routes/reviewsRouter");
-const contactRouter = require("./src/routes/contactRoutes");
 const videoRouter = require("./src/routes/videoRoutes");
-const documentRouter = require("./src/routes/documentRoutes");
-const docCatRouter = require("./src/routes/docCatRoutes");
 const blogCatRouter = require("./src/routes/blogCatRoutes");
 const blogRouter = require("./src/routes/blogRoutes");
 const quizRouter = require("./src/routes/quizRoutes");
 const cors = require("cors");
+const multer = require("multer");
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images'); // Folder tempat gambar disimpan, sesuaikan dengan nama folder Anda
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname); // Nama file unik
+  }
+});
+
+// Filter untuk tipe file gambar yang diizinkan
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true); // Hanya menerima file gambar JPEG atau PNG
+  } else {
+    cb(new Error('Invalid file type, only JPEG and PNG are allowed'), false);
+  }
+};
 
 
-app.use(cors({
-  origin: 'http://localhost:5173', // Ganti dengan origin yang benar dari aplikasi frontend Anda
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Jika Anda menggunakan cookies atau session
-}))
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Ganti dengan origin yang benar dari aplikasi frontend Anda
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Jika Anda menggunakan cookies atau session
+  })
+);
 
 dbConnect();
 app.use(
@@ -44,6 +66,9 @@ app.use(
     }),
   })
 );
+
+
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -51,7 +76,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send(`<a href="https://api-lms-green.vercel.app/google">Login With Google</a>`);
+  res.send(
+    `<a href="https://api-lms-green.vercel.app/google">Login With Google</a>`
+  );
 });
 
 app.use("/api/user", userRouter);
@@ -60,10 +87,7 @@ app.use("/api/tutorial/category", tutCatRouter);
 app.use("/api/tutorial", tutorialRouter);
 app.use("/api/newsletter", newsLetterRouter);
 app.use("/api/review", reviewRouter);
-app.use("/api/contact", contactRouter);
 app.use("/api/video", videoRouter);
-app.use("/api/doc/category", docCatRouter);
-app.use("/api/doc", documentRouter);
 app.use("/api/blog/category", blogCatRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/quiz", quizRouter);

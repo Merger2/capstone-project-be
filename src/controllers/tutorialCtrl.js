@@ -4,28 +4,38 @@ const asyncHandler = require("express-async-handler");
 
 const postTutorial = asyncHandler(async (req, res) => {
   try {
+    // Membuat slug dari title dan tutorialCategory
     if (req.body.title) {
       req.body.slug = slugify(req.body.title.toLowerCase());
     }
     if (req.body.tutorialCategory) {
-      req.body.tutorialCategorySlug = slugify(
-        req.body.tutorialCategory.toLowerCase()
-      );
+      req.body.tutorialCategorySlug = slugify(req.body.tutorialCategory.toLowerCase());
     }
+
+    // Memastikan file gambar diunggah
+    if (!req.file) {
+      return res.status(422).json({ message: "Image must be uploaded" });
+    }
+    req.body.image = req.file.path;
+
+    // Membuat tutorial baru dalam database
     const postTut = await Tutorial.create(req.body);
-    res.status(200).json({
+
+    res.status(201).json({
       status: true,
       message: "Tutorial Created",
       data: postTut,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       status: false,
-      message: "Something went wrong",
+      message: error.message || "Something went wrong",
       error: error.message,
     });
   }
 });
+
+
 
 const getATutorial = asyncHandler(async (req, res) => {
   const { slug, type } = req.params;
