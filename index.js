@@ -55,7 +55,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Ganti dengan origin yang benar dari aplikasi frontend Anda
+    origin: "http://localhost:5173" || "https://harmonious-malasada-63e9ae.netlify.app", // Ganti dengan origin yang benar dari aplikasi frontend Anda
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Jika Anda menggunakan cookies atau session
