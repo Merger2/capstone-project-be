@@ -21,6 +21,14 @@ const blogRouter = require("./src/routes/blogRoutes");
 const quizRouter = require("./src/routes/quizRoutes");
 const cors = require("cors");
 const multer = require("multer");
+const fs = require('fs');
+const path = require('path');
+
+// Membuat folder images jika belum ada
+const dir = path.join(__dirname, 'images');
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+}
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
