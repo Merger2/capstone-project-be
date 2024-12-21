@@ -54,6 +54,11 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.headers.origin); // Cek apakah origin sesuai
+  next();
+});
+
 dbConnect();
 app.use(
   session({

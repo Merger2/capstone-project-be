@@ -13,7 +13,7 @@
         unique: true,
         index: true,
       },
-      tutorialCategory: {
+      tutorialCategory: { // Mata
         type: String,
         required: true,
       },
@@ -25,11 +25,11 @@
         type: String,
         required: true,
       },
-      level: {
+      level: { // Kelas 10, Kelas 11
         type: String,
         required: true,
       },
-      schoolType: {
+      schoolType: { //SMA atau SMP
         type: String,
         required: true,
       },
