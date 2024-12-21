@@ -55,10 +55,10 @@ app.use(
 
 app.use(
   cors({
-    origin:true,
+    origin: ['http://localhost:5173', 'https://divine-purpose-production.up.railway.app', 'https://edudu.netlify.app'],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    credentials: true, // Jika Anda menggunakan cookies atau session
   })
 );
 
